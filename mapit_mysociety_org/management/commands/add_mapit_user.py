@@ -17,8 +17,8 @@ class Command(BaseCommand):
     help = "Create a new user with associated Stripe subscription"
 
     def add_arguments(self, parser):
-        prices = stripe.Price.list(limit=100)
-        price_ids = [price.id for price in prices.data if price.id.startswith('mapit')]
+        prices = stripe.Price.list(limit=100, expand=['data.product'])
+        price_ids = [price.product.name for price in prices.data if price.product.name.startswith('MapIt')]
         coupons = stripe.Coupon.list()
         self.coupon_ids = [coupon['id'] for coupon in coupons if coupon['id'].startswith('charitable')]
         parser.add_argument('--email', required=True)
@@ -30,6 +30,9 @@ class Command(BaseCommand):
         email = options['email']
         coupon = options['coupon']
         price = options['price']
+
+        prices = stripe.Price.list(limit=100, expand=['data.product'])
+        price = [p for p in prices.data if p.product.name == price][0]
 
         if coupon not in self.coupon_ids:
             # coupon ID of the form charitableN(-Nmonths)
@@ -53,7 +56,7 @@ class Command(BaseCommand):
 
         customer = stripe.Customer.create(email=email).id
         stripe_sub = stripe.Subscription.create(
-            customer=customer, items=[{"price": price}], coupon=coupon, trial_period_days=options['trial']).id
+            customer=customer, items=[{"price": price.id}], coupon=coupon, trial_period_days=options['trial']).id
 
         sub = Subscription.objects.create(user=user, stripe_id=stripe_sub)
         sub.redis_update_max(price)
