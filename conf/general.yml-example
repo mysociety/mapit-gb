@@ -54,6 +54,10 @@ STRIPE_PUBLIC_KEY: ''
 STRIPE_API_VERSION: ''
 STRIPE_TAX_RATE: ''
 
+PRICING_TIER_1_ID: 'price_123'
+PRICING_TIER_2_ID: 'price_456'
+PRICING_TIER_3_ID: 'price_789'
+
 # Mapped to Django's DEBUG and TEMPLATE_DEBUG settings. Optional, defaults to True.
 DEBUG: True
 
