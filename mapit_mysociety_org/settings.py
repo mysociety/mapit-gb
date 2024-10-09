@@ -190,7 +190,7 @@ if 'test' in sys.argv:
     ]
 else:
     PRICING = [
-        {'id': config.get('PRICING_TIER_1_ID'), 'price': 20, 'calls': '10,000'},
-        {'id': config.get('PRICING_TIER_2_ID'), 'price': 100, 'calls': '100,000'},
-        {'id': config.get('PRICING_TIER_3_ID'), 'price': 300, 'calls': '0'},
+        {'id': config.get('PRICING_TIER_1_ID'), 'price': config.get('PRICING_TIER_1_AMOUNT'), 'calls': '10,000'},
+        {'id': config.get('PRICING_TIER_2_ID'), 'price': config.get('PRICING_TIER_2_AMOUNT'), 'calls': '100,000'},
+        {'id': config.get('PRICING_TIER_3_ID'), 'price': config.get('PRICING_TIER_3_AMOUNT'), 'calls': '0'},
     ]
